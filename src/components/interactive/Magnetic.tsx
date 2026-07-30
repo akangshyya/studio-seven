@@ -13,7 +13,7 @@ type MagneticProps = {
   cursorLabel?: string
   onEnter?: () => void
   onLeave?: () => void
-  onClick?: () => void
+  onClick?: (e: MouseEvent<HTMLElement>) => void
 }
 
 export function Magnetic({

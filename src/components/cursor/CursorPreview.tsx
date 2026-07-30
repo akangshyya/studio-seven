@@ -21,6 +21,9 @@ export function CursorPreview() {
           className="pointer-events-none fixed left-0 top-0 z-[95] w-52 -translate-x-1/2 -translate-y-[135%] overflow-hidden rounded-sm border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,.55)]"
         >
           <div className={`relative aspect-[4/5] w-full ${preview.gradient}`}>
+            {preview.image && (
+              <img src={preview.image} alt="" aria-hidden className="absolute inset-0 h-full w-full object-cover" />
+            )}
             <div
               aria-hidden
               className="absolute inset-0 opacity-40"

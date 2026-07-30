@@ -5,7 +5,7 @@ import type { MotionValue } from 'framer-motion'
 
 export type CursorVariant = 'default' | 'hover' | 'view' | 'text'
 
-export type CursorPreview = { label: string; meta?: string; gradient: string } | null
+export type CursorPreview = { label: string; meta?: string; gradient: string; image?: string } | null
 
 type CursorContextValue = {
   x: MotionValue<number>

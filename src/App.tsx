@@ -1,20 +1,19 @@
 import { useEffect } from 'react'
 import Lenis from '@studio-freight/lenis'
 import { Navbar } from './components/layout/Navbar'
-import { Hero } from './components/sections/Hero'
-import { Ecosystem } from './components/sections/Ecosystem'
-import { WhatWeBuild } from './components/sections/WhatWeBuild'
-import { Philosophy } from './components/sections/Philosophy'
-import { SelectedWork } from './components/sections/SelectedWork'
-import { About } from './components/sections/About'
-import { Closing } from './components/sections/Closing'
 import { Footer } from './components/layout/Footer'
+import { CurtainOverlay } from './components/layout/CurtainOverlay'
+import { Home } from './pages/Home'
+import { WhatWeBuildPage } from './pages/WhatWeBuildPage'
 import { CursorProvider } from './lib/CursorContext'
+import { RouterProvider, useRouter } from './lib/Router'
 import { CustomCursor } from './components/cursor/CustomCursor'
 import { CursorSpotlight } from './components/cursor/CursorSpotlight'
 import { CursorPreview } from './components/cursor/CursorPreview'
 
-export default function App() {
+function Shell() {
+  const { path } = useRouter()
+
   useEffect(() => {
     const lenis = new Lenis({ duration: 1.15, smoothWheel: true })
     let frame = 0
@@ -30,23 +29,26 @@ export default function App() {
   }, [])
 
   return (
+    <div className="site-shell">
+      <CursorSpotlight />
+      <Navbar />
+      <main>
+        {path === '/what-we-build' ? <WhatWeBuildPage /> : <Home />}
+      </main>
+      <Footer />
+      <CustomCursor />
+      <CursorPreview />
+      <CurtainOverlay />
+    </div>
+  )
+}
+
+export default function App() {
+  return (
     <CursorProvider>
-      <div className="site-shell">
-        <CursorSpotlight />
-        <Navbar />
-        <main>
-          <Hero />
-          <Ecosystem />
-          <WhatWeBuild />
-          <Philosophy />
-          <SelectedWork />
-          <About />
-          <Closing />
-        </main>
-        <Footer />
-        <CustomCursor />
-        <CursorPreview />
-      </div>
+      <RouterProvider>
+        <Shell />
+      </RouterProvider>
     </CursorProvider>
   )
 }
