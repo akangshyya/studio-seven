@@ -7,7 +7,7 @@ const rise = { initial: { opacity: 0, y: 22 }, animate: { opacity: 1, y: 0 } }
 export function Hero() {
   return <section id="top" className="page-grid relative flex min-h-[100svh] items-end overflow-hidden border-b border-white/15 pt-32">
     <video autoPlay muted loop playsInline className="absolute inset-0 h-full w-full object-cover">
-      <source src="/video/bg.mp4" type="video/mp4" />
+      <source src="/bg.mp4" type="video/mp4" />
     </video>
     <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,8,8,.25)_0%,rgba(8,8,8,.55)_55%,rgba(8,8,8,.92)_100%)]" />
     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_88%_28%,rgba(163,177,136,.13),transparent_28%)]" />
