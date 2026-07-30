@@ -44,10 +44,9 @@ function OriginPanel() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.4 }}
       transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-      className="relative mt-8 flex flex-col md:mt-0 md:h-full md:justify-center"
+      className="relative mt-8 h-[420px] w-full md:mt-0 md:h-full md:min-h-[480px]"
     >
-      <div className="relative w-full max-w-[340px] aspect-[300/420]">
-        <svg viewBox="0 0 300 420" preserveAspectRatio="xMidYMid meet" className="absolute inset-0 h-full w-full">
+      <svg viewBox="0 0 300 420" preserveAspectRatio="xMidYMid meet" className="absolute inset-0 h-full w-full">
         <defs>
           {all.map((s) => (
             <filter key={s.seed} id={`wobble-${s.seed}`} x="-40%" y="-40%" width="180%" height="180%">
@@ -112,9 +111,8 @@ function OriginPanel() {
           </motion.div>
         )}
       </AnimatePresence>
-      </div>
 
-      <p className="pointer-events-none mt-6 mono text-[9px] uppercase leading-relaxed tracking-[.14em] text-white/70">
+      <p className="pointer-events-none absolute bottom-0 left-0 mono text-[9px] uppercase leading-relaxed tracking-[.14em] text-white/70">
         Seven states.<br />One horizon.
       </p>
     </motion.div>
@@ -126,7 +124,7 @@ export function About() {
     <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_12%_20%,rgba(163,177,136,.07),transparent_45%)]" />
     <Container className="relative">
       <div className="grid gap-14 md:grid-cols-12 md:items-stretch">
-        <div className="md:col-span-4">
+        <div className="md:col-span-5">
           <p className="eyebrow">Origin</p>
           <OriginPanel />
         </div>
