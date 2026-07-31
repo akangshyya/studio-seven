@@ -34,6 +34,65 @@ const fillers: Topo[] = [
 
 const all = [...states, ...fillers]
 
+// --- deterministic contour generation -------------------------------------------------
+// Each ring is a real vector path (not a rasterized SVG filter), so it stays crisp at any
+// scale. A small set of seeded sine harmonics is shared across all rings of one peak so the
+// nested contours wobble coherently, the way real elevation bands do.
+
+function mulberry32(seed: number) {
+  let a = seed
+  return () => {
+    a |= 0
+    a = (a + 0x6d2b79f5) | 0
+    let t = Math.imul(a ^ (a >>> 15), 1 | a)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+function catmullRomPath(points: [number, number][]) {
+  const n = points.length
+  let d = `M ${points[0][0].toFixed(2)} ${points[0][1].toFixed(2)} `
+  for (let i = 0; i < n; i++) {
+    const p0 = points[(i - 1 + n) % n]
+    const p1 = points[i]
+    const p2 = points[(i + 1) % n]
+    const p3 = points[(i + 2) % n]
+    const c1x = p1[0] + (p2[0] - p0[0]) / 6
+    const c1y = p1[1] + (p2[1] - p0[1]) / 6
+    const c2x = p2[0] - (p3[0] - p1[0]) / 6
+    const c2y = p2[1] - (p3[1] - p1[1]) / 6
+    d += `C ${c1x.toFixed(2)} ${c1y.toFixed(2)} ${c2x.toFixed(2)} ${c2y.toFixed(2)} ${p2[0].toFixed(2)} ${p2[1].toFixed(2)} `
+  }
+  return d + 'Z'
+}
+
+function buildContours(s: Topo, samples = 40) {
+  const rand = mulberry32(s.seed)
+  const harmonics = Array.from({ length: 4 }, () => ({
+    freq: 2 + Math.floor(rand() * 4),
+    amp: 0.045 + rand() * 0.05,
+    phase: rand() * Math.PI * 2,
+  }))
+
+  const paths: string[] = []
+  for (let r = 0; r < s.rings; r++) {
+    const radius = s.base + r * s.step
+    const pts: [number, number][] = []
+    for (let i = 0; i < samples; i++) {
+      const t = (i / samples) * Math.PI * 2
+      let offset = 0
+      for (const h of harmonics) offset += Math.sin(t * h.freq + h.phase) * h.amp
+      const rr = radius * (1 + offset)
+      pts.push([s.cx + Math.cos(t) * rr, s.cy + Math.sin(t) * rr * s.ry])
+    }
+    paths.push(catmullRomPath(pts))
+  }
+  return paths
+}
+
+const contours = new Map(all.map((s) => [s.seed, buildContours(s)]))
+
 function OriginPanel() {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null)
   const active = hoveredIdx !== null ? all[hoveredIdx] : null
@@ -47,33 +106,34 @@ function OriginPanel() {
       className="relative mt-8 h-[420px] w-full md:mt-0 md:h-full md:min-h-[480px]"
     >
       <svg viewBox="0 0 300 420" preserveAspectRatio="xMidYMid meet" className="absolute inset-0 h-full w-full">
-        <defs>
-          {all.map((s) => (
-            <filter key={s.seed} id={`wobble-${s.seed}`} x="-40%" y="-40%" width="180%" height="180%">
-              <feTurbulence type="fractalNoise" baseFrequency="0.026 0.036" numOctaves="3" seed={s.seed} result="n" />
-              <feDisplacementMap in="SourceGraphic" in2="n" scale="15" xChannelSelector="R" yChannelSelector="G" />
-            </filter>
-          ))}
-        </defs>
-
         {all.map((s, i) => {
           const outerR = s.base + (s.rings - 1) * s.step
           const isActive = hoveredIdx === i
+          const paths = contours.get(s.seed)!
           return (
             <g key={s.seed}>
-              <g filter={`url(#wobble-${s.seed})`} fill="none" stroke="#a3b188">
-                {Array.from({ length: s.rings }).map((_, r) => {
-                  const radius = s.base + r * s.step
+              <g fill="none" stroke="#a3b188" strokeLinejoin="round">
+                {paths.map((d, r) => {
+                  const order = s.rings - 1 - r // outer ring reveals first, peak completes last
                   return (
-                    <ellipse
+                    <motion.path
                       key={r}
-                      cx={s.cx}
-                      cy={s.cy}
-                      rx={radius}
-                      ry={radius * s.ry}
+                      d={d}
                       strokeWidth={r % 3 === 0 ? 1.1 : 0.55}
-                      strokeOpacity={isActive ? 0.85 - r * (0.7 / s.rings) : 0}
-                      style={{ transition: 'stroke-opacity .45s ease' }}
+                      initial={false}
+                      animate={
+                        isActive
+                          ? { opacity: 0.85 - r * (0.7 / s.rings), pathLength: 1 }
+                          : { opacity: 0, pathLength: 0.82 }
+                      }
+                      transition={
+                        isActive
+                          ? {
+                              opacity: { duration: 0.35, delay: order * 0.032 },
+                              pathLength: { duration: 0.55, delay: order * 0.032, ease: [0.16, 1, 0.3, 1] },
+                            }
+                          : { duration: 0.3 }
+                      }
                     />
                   )
                 })}

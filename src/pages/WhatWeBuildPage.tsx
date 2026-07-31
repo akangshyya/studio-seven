@@ -4,38 +4,21 @@ import { Container } from '../components/layout/Container'
 import { Magnetic } from '../components/interactive/Magnetic'
 import { ScrambleText } from '../components/interactive/ScrambleText'
 import { useRouter } from '../lib/Router'
+import { capabilities } from '../data/capabilities'
 
 const rise = { initial: { opacity: 0, y: 22 }, animate: { opacity: 1, y: 0 } }
 
-const capabilities = [
-  {
-    number: '01',
-    title: 'AI systems',
-    text: 'Applied intelligence woven into products and operations — models, agents, and infrastructure built to think, not just automate.',
-  },
-  {
-    number: '02',
-    title: 'Branding',
-    text: 'Identity systems, naming, and visual language that give an idea a voice people remember and trust.',
-  },
-  {
-    number: '03',
-    title: 'Content production',
-    text: 'Film, photography, and campaigns produced with intent — content built to move culture, not just fill a feed.',
-  },
-  {
-    number: '04',
-    title: 'Digital products',
-    text: 'Web and mobile products designed and engineered end to end, from first sketch to shipped release.',
-  },
-]
-
 export function WhatWeBuildPage() {
-  const { goToSection } = useRouter()
+  const { navigate, goToSection } = useRouter()
 
   const goHome = (hash?: string) => (e: MouseEvent) => {
     e.preventDefault()
     goToSection(hash ?? '#top')
+  }
+
+  const goToCapability = (slug: string) => (e: MouseEvent) => {
+    e.preventDefault()
+    navigate(`/what-we-build/${slug}`)
   }
 
   return (
@@ -71,11 +54,11 @@ export function WhatWeBuildPage() {
             <motion.div key={item.title} {...rise} transition={{ duration: 0.6, delay: 0.35 + index * 0.08 }}>
               <Magnetic
                 as="a"
-                href="/#contact"
-                onClick={goHome('#contact')}
+                href={`/what-we-build/${item.slug}`}
+                onClick={goToCapability(item.slug)}
                 strength={0.04}
                 cursorVariant="view"
-                cursorLabel="Enquire"
+                cursorLabel="View"
                 className="group flex flex-col gap-4 border-t border-white/15 py-7 md:flex-row md:items-center md:justify-between md:py-9"
               >
                 <div className="flex items-center gap-6">
