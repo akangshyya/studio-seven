@@ -5,7 +5,7 @@ import { useCursor } from '../../lib/CursorContext'
 const projects = [
   ['01', 'AI Voice Receptionist', 'AI  systems· Digital Product', 'bg-[#11110f]', '/tools/first.jpg'],
   ['02', 'Real Estate Growth Systems', 'AI  systems· Paid Growth', 'bg-[#1b1e17]', '/tools/second.jpg'],
-  ['03', 'Elite Rankers', 'Brand campaign · Paid growth', 'bg-[#181818]', '/tools/first.jpg'],
+  ['03', 'Brand Foundation', 'Brand campaign · Paid growth', 'bg-[#181818]', '/tools/third.jpg'],
 ] as const
 
 export function SelectedWork() {
