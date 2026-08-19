@@ -16,7 +16,7 @@ export function Closing() {
               <span className="ml-10 transition-transform duration-500 group-hover:translate-x-1">↗</span>
             </Magnetic>
             <Magnetic as="a" href="https://www.instagram.com/studiosevencreatives?igsh=MWlvdTdjN3lqbG8zcA%3D%3D&utm_source=qr" target="_blank" rel="noreferrer" strength={0.3} cursorVariant="view" cursorLabel="Follow" className="group inline-flex border-b border-white/25 pb-4 mono text-[11px] uppercase tracking-[.13em] hover:border-[#a3b188]">
-              <ScrambleText text="@studioseven" />
+              <ScrambleText text="@studiosevencreatives" />
               <span className="ml-10 transition-transform duration-500 group-hover:translate-x-1">↗</span>
             </Magnetic>
           </div>
