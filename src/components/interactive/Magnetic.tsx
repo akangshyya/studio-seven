@@ -7,6 +7,8 @@ type MagneticProps = {
   children: ReactNode
   as?: 'a' | 'div' | 'button'
   href?: string
+  target?: string
+  rel?: string
   className?: string
   strength?: number
   cursorVariant?: CursorVariant
@@ -20,6 +22,8 @@ export function Magnetic({
   children,
   as = 'div',
   href,
+  target,
+  rel,
   className = '',
   strength = 0.35,
   cursorVariant = 'hover',
@@ -56,7 +60,7 @@ export function Magnetic({
 
   if (as === 'a') {
     return (
-      <a ref={ref} href={href} onMouseMove={handleMove} onMouseEnter={handleEnter} onMouseLeave={handleLeave} onClick={onClick} className={sharedClassName}>
+      <a ref={ref} href={href} target={target} rel={rel} onMouseMove={handleMove} onMouseEnter={handleEnter} onMouseLeave={handleLeave} onClick={onClick} className={sharedClassName}>
         {children}
       </a>
     )

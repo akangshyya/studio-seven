@@ -5,6 +5,7 @@ export type Capability = {
   number: string
   title: string
   text: string
+  status: string
   projects: Project[]
 }
 
@@ -13,6 +14,7 @@ export const capabilities: Capability[] = [
     slug: 'ai-systems',
     number: '01',
     title: 'AI systems',
+    status: 'Live now',
     text: 'Applied intelligence woven into products and operations — models, agents, and infrastructure built to think, not just automate.',
     projects: [
       {
@@ -51,6 +53,7 @@ export const capabilities: Capability[] = [
     slug: 'branding',
     number: '02',
     title: 'Branding',
+    status: 'In development',
     text: 'Identity systems, naming, and visual language that give an idea a voice people remember and trust.',
     projects: [
       {
@@ -89,6 +92,7 @@ export const capabilities: Capability[] = [
     slug: 'content-production',
     number: '03',
     title: 'Content production',
+    status: 'In development',
     text: 'Film, photography, and campaigns produced with intent — content built to move culture, not just fill a feed.',
     projects: [
       {
@@ -127,6 +131,7 @@ export const capabilities: Capability[] = [
     slug: 'digital-products',
     number: '04',
     title: 'Digital products',
+    status: 'In development',
     text: 'Web and mobile products designed and engineered end to end, from first sketch to shipped release.',
     projects: [
       {
