@@ -15,8 +15,8 @@ export function Closing() {
               <ScrambleText text="studiosevencreatives@gmail.com" />
               <span className="ml-10 transition-transform duration-500 group-hover:translate-x-1">↗</span>
             </Magnetic>
-            <Magnetic as="a" href="tel:+918822512770" strength={0.3} cursorVariant="view" cursorLabel="Call" className="group inline-flex border-b border-white/25 pb-4 mono text-[11px] uppercase tracking-[.13em] hover:border-[#a3b188]">
-              <ScrambleText text="+91 88225 12770" />
+            <Magnetic as="a" href="https://instagram.com/studioseven" target="_blank" rel="noreferrer" strength={0.3} cursorVariant="view" cursorLabel="Follow" className="group inline-flex border-b border-white/25 pb-4 mono text-[11px] uppercase tracking-[.13em] hover:border-[#a3b188]">
+              <ScrambleText text="@studioseven" />
               <span className="ml-10 transition-transform duration-500 group-hover:translate-x-1">↗</span>
             </Magnetic>
           </div>

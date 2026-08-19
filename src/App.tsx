@@ -5,6 +5,7 @@ import { Footer } from './components/layout/Footer'
 import { CurtainOverlay } from './components/layout/CurtainOverlay'
 import { Home } from './pages/Home'
 import { WhatWeBuildPage } from './pages/WhatWeBuildPage'
+import { CapabilityDetailPage } from './pages/CapabilityDetailPage'
 import { CursorProvider } from './lib/CursorContext'
 import { RouterProvider, useRouter } from './lib/Router'
 import { CustomCursor } from './components/cursor/CustomCursor'
@@ -13,6 +14,7 @@ import { CursorPreview } from './components/cursor/CursorPreview'
 
 function Shell() {
   const { path } = useRouter()
+  const capabilitySlug = path.match(/^\/what-we-build\/([a-z0-9-]+)\/?$/)?.[1]
 
   useEffect(() => {
     const lenis = new Lenis({ duration: 1.15, smoothWheel: true })
@@ -33,7 +35,13 @@ function Shell() {
       <CursorSpotlight />
       <Navbar />
       <main>
-        {path === '/what-we-build' ? <WhatWeBuildPage /> : <Home />}
+        {capabilitySlug ? (
+          <CapabilityDetailPage slug={capabilitySlug} />
+        ) : path === '/what-we-build' ? (
+          <WhatWeBuildPage />
+        ) : (
+          <Home />
+        )}
       </main>
       <Footer />
       <CustomCursor />
